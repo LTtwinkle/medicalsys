@@ -7,8 +7,8 @@ vue add eslint
 vue add router
 vue add axios
 
-3.使用antdv ui框架
-npm install ant-design-vue --save
+3.使用element ui框架
+npm i element-ui -S
 
 4.使用less
 npm install less less-loader --save
