@@ -9,9 +9,7 @@
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  width: 920px;
-  height: 480px;
+  width: 1080px;
   margin: 0 auto;
-  border: 1px solid black;
 }
 </style>
