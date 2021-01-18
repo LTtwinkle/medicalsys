@@ -1,5 +1,5 @@
 <template>
-  <div class="header">
+  <div class="headerbar">
     <i class="el-icon-back" @click="goBack"></i>
     <i class="el-icon-switch-button"></i>
   </div>
@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: 'header',
+  name: 'headerbar',
   methods: {
     goBack() {
       this.$router.go(-1);
@@ -17,7 +17,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.header {
+.headerbar {
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;

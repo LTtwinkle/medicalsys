@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header />
+    <HeaderBar />
     <div class="register">
       <h2>患者注册</h2>
       <el-form :model="registerValidateForm" ref="registerValidateForm" label-width="100px" class="demo-ruleForm">
@@ -47,11 +47,11 @@
 </template>
 
 <script>
-import Header from '../../components/Header.vue';
+import HeaderBar from '../../components/HeaderBar.vue';
 export default {
   name: 'register',
   components: {
-    Header,
+    HeaderBar,
   },
   data() {
     return {
@@ -79,7 +79,12 @@ export default {
       this.$refs[formName].resetFields();
     },
     ToLogin() {
-      this.$router.replace('/login');
+      this.$router.replace({
+        name: 'Login',
+        params: {
+          userType: '患者',
+        }
+      })
     },
     pwdStrength(val) {
       let strength = 0;
@@ -122,6 +127,14 @@ export default {
       } else {
         return '强';
       }
+    },
+    patientRegister() {
+      this.$axios.post('/', {
+
+      })
+      .then((res) => {
+        console.log(res);
+      })
     }
   }
 }

@@ -3,11 +3,11 @@
     <div v-if="waitChoose" class="home">
       <p>医院诊疗系统</p>
       <div class="IdentityChoice">
-        <el-button type="primary" @click="patientLogin">患者登录</el-button>
-        <el-button type="warning">医生登录</el-button>
-        <el-button type="warning">诊疗师登录</el-button>
-        <el-button type="success">药房登录</el-button>
-        <el-button type="info">管理员登录</el-button>
+        <el-button type="primary" @click="WaitLogin('患者')">患者登录</el-button>
+        <el-button type="warning" @click="Login('医生')">医生登录</el-button>
+        <el-button type="warning" @click="Login('诊疗师')">诊疗师登录</el-button>
+        <el-button type="success" @click="Login('药房')">药房登录</el-button>
+        <el-button type="info" @click="Login('管理员')">管理员登录</el-button>
       </div>
     </div>
     <div v-else class="useCache">
@@ -25,6 +25,7 @@ export default {
     return {
       waitChoose: true,
       liveTime: 60,
+      userType: '',
     }
   },
   watch: {
@@ -33,36 +34,30 @@ export default {
         // 刷卡后，三秒内跳转到登录/注册界面
         setTimeout(() => {
           // console.log('go')
-          this.$router.push('/login');
+          // this.$router.push('/login');
+          this.Login(this.userType);
           // this.waitChoose = true;
         }, 3000);
       }
     },
   },
   methods: {
-    patientLogin() {
+    WaitLogin(type) {
       this.waitChoose = false;
-
+      this.userType = type;
       // this.$axios.post('/user/addUser', {id: '12', username: 'ggs', age: '22'})
       // .then((res) => {
       //   console.log(res)
       // })
     },
-    // readCard() {
-    //   let res="00000000";
-    //   let i = 1;
-    //   let fso, file;
-    //   let ForReading = 1;
-    //   while(i){
-    //     fso = new ActiveXObject("Scripting.FileSystemObject");
-    //     file = fso.OpenTextFile("C:\\Users\\hp\\Desktop\\temp\\temp\\test.txt", ForReading);
-    //     res = file.ReadAll();
-    //     if(res!="00000000"){
-    //       break;
-    //     }
-    //   }
-    //   // console.log(res);
-    // },
+    Login(userType) {
+      this.$router.push({
+        name: 'Login',
+        params: {
+          userType,
+        }
+      })
+    }
   }
 }
 </script>
