@@ -67,6 +67,7 @@ export default {
       userType: '',
       formType: false,
       url: '',
+      toLink: '',
     }
   },
   mounted() {
@@ -78,8 +79,8 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
-          console.log(this.AcctPwdForm)
+          this.$message('submit!');
+          this.Login();
         } else {
           console.log('error submit!!');
           return false;
@@ -95,23 +96,28 @@ export default {
     setLoginType(userType) {
       switch(userType) {
         case '患者':
-          this.url = '/1',
+          this.url = '/1';
+          this.toLink = '/patient';
           this.formType = false;
           break;
         case '管理员':
-          this.url = '/2',
+          this.url = '/2';
+          this.toLink = '/manager';
           this.formType = false;
           break;
         case '医生':
           this.url = '/3';
+          this.toLink = '/doctor';
           this.formType = true;
           break;
         case '诊疗师':
           this.url = '/4';
+          this.toLink = '/treator';
           this.formType = true;
           break;
         case '药房':
           this.url = '/5';
+          this.toLink = '/pharmacy';
           this.formType = true;
           break;
         default:
@@ -119,7 +125,7 @@ export default {
       }
     },
     Login() {
-      
+      this.$router.push(this.toLink);
     }
   }
 }

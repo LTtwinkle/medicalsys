@@ -20,6 +20,31 @@ const routes = [
     name: 'Register',
     component: () => import('../views/account/Register.vue'),
   },
+  {
+    path: '/doctor',
+    name: 'Doctor',
+    component: () => import('../views/doctor/Doctor.vue'),
+  },
+  {
+    path: '/manager',
+    name: 'Manager',
+    component: () => import('../views/manager/Manager.vue'),
+  },
+  {
+    path: '/patient',
+    name: 'Patient',
+    component: () => import('../views/patient/Patient.vue'),
+  },
+  {
+    path: '/treator',
+    name: 'Treator',
+    component: () => import('../views/treator/Treator.vue'),
+  },
+  {
+    path: '/pharmacy',
+    name: 'Pharmacy',
+    component: () => import('../views/pharmacy/Pharmacy.vue'),
+  },
 ]
 
 const router = new VueRouter({
