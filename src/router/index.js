@@ -36,6 +36,26 @@ const routes = [
     component: () => import('../views/patient/Patient.vue'),
   },
   {
+    path: '/registration',
+    name: 'Registration',
+    component: () => import('../views/patient/Registration.vue'),
+  },
+  {
+    path: '/payfees',
+    name: 'PayFees',
+    component: () => import('../views/patient/PayFees.vue'),
+  },
+  {
+    path: '/recharge',
+    name: 'Recharge',
+    component: () => import('../views/patient/Recharge.vue'),
+  },
+  {
+    path: '/diagnoseLog',
+    name: 'DiagnoseLog',
+    component: () => import('../views/patient/DiagnoseLog.vue'),
+  },
+  {
     path: '/treator',
     name: 'Treator',
     component: () => import('../views/treator/Treator.vue'),

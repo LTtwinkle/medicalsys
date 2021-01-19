@@ -67,8 +67,9 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
-          console.log(this.registerValidateForm)
+          // alert('submit!');
+          // console.log(this.registerValidateForm)
+          this.patientRegister();
         } else {
           console.log('error submit!!');
           return false;
@@ -129,8 +130,10 @@ export default {
       }
     },
     patientRegister() {
-      this.$axios.post('/', {
-
+      console.log('login');
+      this.$axios.post('/Patient_login', {
+        passwd: '12345678',
+        card_id: '123456789'
       })
       .then((res) => {
         console.log(res);
