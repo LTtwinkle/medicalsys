@@ -67,8 +67,6 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          // alert('submit!');
-          // console.log(this.registerValidateForm)
           this.patientRegister();
         } else {
           console.log('error submit!!');
@@ -130,13 +128,22 @@ export default {
       }
     },
     patientRegister() {
-      console.log('login');
-      this.$axios.post('/Patient_login', {
-        passwd: '12345678',
-        card_id: '123456789'
-      })
+      console.log('register');
+      let data = {
+        id: sessionStorage.getItem('card_id'),
+        name: this.registerValidateForm.name,
+        sex: this.registerValidateForm.sex,
+        pwd: this.registerValidateForm.password,
+      }
+      this.$axios.post('/user/p_info', data)
       .then((res) => {
         console.log(res);
+        if(res.code == 200) {
+          this.$message.success('注册成功！请前往登录！');
+          this.ToLogin();
+        } else {
+          this.$message.error(res?.message);
+        }
       })
     }
   }

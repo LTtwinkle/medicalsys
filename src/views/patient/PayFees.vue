@@ -30,7 +30,7 @@
             <el-button
               size="mini"
               type="success"
-              @click="handleDelete(scope.$index, scope.row)">缴费</el-button>
+              @click="handlePay(scope.$index, scope.row)">缴费</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -61,7 +61,21 @@ export default {
       }]
     }
   },
-
+  methods: {
+    handlePay(index,row) {
+      console.log(index,row);
+      this.$axios.post('/', {
+        parent_id: '123'
+      })
+      .then((res) => {
+        if(res.code == 200) {
+          this.$message.success('缴费成功！');
+        } else {
+          this.$message.error(res?.message);
+        }
+      })
+    }
+  }
 }
 </script>
 <style lang="less" scoped>

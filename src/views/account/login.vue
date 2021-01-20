@@ -96,7 +96,7 @@ export default {
     setLoginType(userType) {
       switch(userType) {
         case '患者':
-          this.url = '/1';
+          this.url = '/user/Patient_login';
           this.toLink = '/patient';
           this.formType = false;
           break;
@@ -125,7 +125,29 @@ export default {
       }
     },
     Login() {
-      this.$router.push(this.toLink);
+      let data = {};
+      if(this.formType) {
+        // 账号密码登录
+        data = this.AcctPwdForm;
+      } else{
+        // 密码登录
+        data.passwd = this.onlyPwdForm.password;
+        if(this.url == '/user/Patient_login') {
+          data.card_id = sessionStorage.getItem('card_id');
+        }
+      }
+      console.log(data);
+      this.$axios.post(this.url,data)
+      .then((res) => {
+        console.log(res);
+        if(res.code == '200') {
+          console.log(res.data);
+          this.$message.success('登录成功！');
+          this.$router.push(this.toLink);
+        } else {
+          this.$message.error(res?.message);
+        }
+      })
     }
   }
 }

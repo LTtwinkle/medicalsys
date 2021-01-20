@@ -85,6 +85,7 @@ export default {
         name: '张医生',
       },
       patientInfo: {
+        card_id: '',
         name: '王五',
         age: '30',
         sex: '男',
@@ -92,11 +93,33 @@ export default {
       diagnose: '',
       prescription: '',
       waitTreatNum: 20,
+      diagnoseSubmitData: {
+        card_id: '',
+        department_name: '',
+        doctor_id: '',
+        diagnosis_disease: '',
+        diagnosis_prescription: '',
+        total_money: '',
+      }
     }
   },
   methods: {
     getSelectDrugsInfo(data) {
       console.log(data);
+    },
+    CallNext() {
+      this.$axios.post('/user/Calling', this.diagnoseSubmitData)
+      .then((res) => {
+        console.log(res);
+        if(res.code == 200) {
+          this.patientInfo.card_id = res.data.parent_id;
+          this.patientInfo.name = res.data.parent_name;
+          this.patientInfo.sex = res.data.parent_sex;
+          this.patientInfo.age = res.data.parent_age;
+        } else {
+          this.$message.error(res.message);
+        }
+      })
     }
   }
 }

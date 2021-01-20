@@ -90,6 +90,26 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+    RegistrationRequst() {
+      let data = {
+        registered_id: sessionStorage.getItem('card_id'),
+        registered_department_name: this.form.adminOffice,
+        registered_doctor_postion: this.form.technicalPost,
+        registered_doctor_name: this.form.doctor,
+      }
+      this.$axios.post('/user/reg_in', data)
+      .then((res) => {
+        if(res.code == 200) {
+          sessionStorage.setItem('registeredId', res.data);
+          this.$message.success('挂号成功！');
+          this.$router.go(-1);
+        } else {
+          this.$message.error(res?.message);
+        }
+      })
+    }
   }
 }
 </script>

@@ -24,31 +24,42 @@ export default {
   data() {
     return {
       waitChoose: true,
-      liveTime: 60,
+      liveTime: 30,
       userType: '',
     }
   },
   watch: {
     waitChoose: function(val) {
       if(val == false) {
-        // 刷卡后，三秒内跳转到登录/注册界面
+        this.liveTime = 30;
+        // 进入等待刷卡页面，每秒更新截止时间
+        setInterval(() => {
+          this.liveTime -=1
+        }, 1000);
+        // 30s内没有进入新页面，就返回登录主页
         setTimeout(() => {
-          // console.log('go')
-          // this.$router.push('/login');
-          this.Login(this.userType);
-          // this.waitChoose = true;
-        }, 3000);
+          this.waitChoose = true;
+        }, 10000);
       }
     },
   },
   methods: {
+    // 患者刷卡等待
     WaitLogin(type) {
       this.waitChoose = false;
       this.userType = type;
-      // this.$axios.post('/user/addUser', {id: '12', username: 'ggs', age: '22'})
-      // .then((res) => {
-      //   console.log(res)
-      // })
+      this.$axios.post('/user/Login_judge')
+      .then((res) => {
+        if(res.code == 100) {
+          // 账号非空，直接登录
+          sessionStorage.setItem('card_id', res.data);
+          this.Login(type);
+        } else {
+          // 账号为空，进行注册
+          this.$message.info('请前往注册');
+          this.$router.push('/register');
+        }
+      })
     },
     Login(userType) {
       this.$router.push({

@@ -10,7 +10,6 @@ import axios from "axios";
 
 let config = {
   // baseURL: process.env.baseURL || process.env.apiUrl || ""
-  baseURL: '/api'
   // timeout: 60 * 1000, // Timeout
   // withCredentials: true, // Check cross-site Access-Control
 };
@@ -32,7 +31,8 @@ _axios.interceptors.request.use(
 _axios.interceptors.response.use(
   function(response) {
     // Do something with response data
-    return response;
+    console.log(response.data);
+    return response.data;
   },
   function(error) {
     // Do something with response error
@@ -49,6 +49,8 @@ Plugin.install = function(Vue) {
         return _axios;
       },
       post(url,data) {
+        url = '/api' + url;
+        console.log(url)
         return _axios({
           url,
           method: 'post',
