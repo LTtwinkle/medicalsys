@@ -106,7 +106,7 @@ export default {
           this.formType = false;
           break;
         case '医生':
-          this.url = '/3';
+          this.url = '/user/Doctor_Login';
           this.toLink = '/doctor';
           this.formType = true;
           break;

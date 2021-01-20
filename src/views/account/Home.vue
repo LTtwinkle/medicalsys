@@ -36,9 +36,6 @@ export default {
         // 进入等待刷卡页面，每秒更新截止时间
         this.timer = setInterval(() => {
           this.liveTime -=1;
-          if(this.liveTime > 0 ) {
-            this.LoginJudge(this.userType);
-          }
         }, 1000);
         // 30s内没有进入新页面，就返回登录主页
         setTimeout(() => {
@@ -55,14 +52,20 @@ export default {
     WaitLogin(type) {
       this.waitChoose = false;
       this.userType = type;
+      this.$$axios.post('/user/card')
+      .then((res) => {
+        this.LoginJudge(res.code);
+      })
     },
-    LoginJudge(type) {
-      this.$axios.post('/user/Patient_login_judge')
+    LoginJudge(card_id) {
+      this.$axios.post('/user/Patient_login_judge', {
+        card_id,
+      })
       .then((res) => {
         if(res.code == 100) {
           // 账号非空，直接登录
           sessionStorage.setItem('card_id', res.data);
-          this.Login(type);
+          this.Login(this.userType);
         } else if(res.code == 50) {
           // 账号为空，进行注册
           sessionStorage.setItem('card_id', res.data);
