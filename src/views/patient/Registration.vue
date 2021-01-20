@@ -5,12 +5,12 @@
       <h2>挂号界面</h2>
       <el-form ref="form" :model="form" label-width="120px">
         <el-form-item label="选择科室">
-          <el-select v-model="form.adminOffice" placeholder="请选择科室">
+          <el-select v-model="form.adminOffice" @change="getDoctorList" placeholder="请选择科室">
             <el-option v-for="item in adminOffice" :key="item.id" :label="item.name" :value="item.name"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="选择医生职位">
-          <el-select v-model="form.technicalPost" placeholder="请选择医生职位">
+          <el-select v-model="form.technicalPost"  @change="getDoctorList" placeholder="请选择医生职位">
             <el-option v-for="item in technicalPost" :key="item.id" :label="item.name" :value="item.name"></el-option>
           </el-select>
         </el-form-item>
@@ -20,7 +20,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item>
-          <el-button style="marginLeft: 18px" type="primary">挂号缴费</el-button>
+          <el-button style="marginLeft: 18px" type="primary" @click="RegistrationRequst">挂号缴费</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -36,8 +36,8 @@ export default {
   data() {
     return {
       form: {
-        adminOffice: '',
-        technicalPost: '',
+        adminOffice: '外科',
+        technicalPost: '主任医师',
         doctor: '',
       },
       adminOffice: [
@@ -61,15 +61,15 @@ export default {
       technicalPost: [
         {
           id: '1',
-          name: '主任医生',
+          name: '主任医师',
         },
         {
           id: '2',
-          name: '副主任医生',
+          name: '副主任医师',
         },
         {
           id: '3',
-          name: '主治医生',
+          name: '主治医师',
         }
       ],
       doctor: [
@@ -91,10 +91,35 @@ export default {
       ]
     }
   },
+  mounted() {
+    this.getDoctorList();
+  },
   methods: {
+    getDoctorList() {
+      this.$axios.post('/user/reg_in_list', {
+        department: this.form.adminOffice,
+        doctor_position: this.form.technicalPost,
+      })
+      .then((res) => {
+        if(res.code == 200) {
+          console.log(res.data)
+          if(res.data instanceof Array) {
+            this.doctor = res.data.map((item, index) =>  {
+              return {
+                id: index,
+                name: item.doctor_name,
+                restNum: item.doctor_remain_num,
+              }
+            })
+          }
+        } else {
+          this.$message.error(res?.message);
+        }
+      })
+    },
     RegistrationRequst() {
       let data = {
-        registered_id: sessionStorage.getItem('card_id'),
+        registered_id: sessionStorage.getItem('card_id') || '11' ,
         registered_department_name: this.form.adminOffice,
         registered_doctor_postion: this.form.technicalPost,
         registered_doctor_name: this.form.doctor,

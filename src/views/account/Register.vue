@@ -130,7 +130,7 @@ export default {
     patientRegister() {
       console.log('register');
       let data = {
-        id: sessionStorage.getItem('card_id'),
+        id: sessionStorage.getItem('card_id') || '1234',
         name: this.registerValidateForm.name,
         sex: this.registerValidateForm.sex,
         pwd: this.registerValidateForm.password,

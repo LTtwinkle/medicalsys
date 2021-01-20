@@ -133,7 +133,8 @@ export default {
         // 密码登录
         data.passwd = this.onlyPwdForm.password;
         if(this.url == '/user/Patient_login') {
-          data.card_id = sessionStorage.getItem('card_id');
+          // data.card_id = sessionStorage.getItem('card_id');
+          data.card_id = '1';
         }
       }
       console.log(data);

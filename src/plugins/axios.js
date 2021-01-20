@@ -8,8 +8,17 @@ import axios from "axios";
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
+let ROOT;
+if (process.env.NODE_ENV === 'development') {
+    ROOT = "/api/api";//开发环境下的代理地址，解决本地跨域
+} else {
+    ROOT = 'http://10.20.176.197';    //生产环境下的地址
+}
+// axios.defaults.baseURL = ROOT;
+
 let config = {
   // baseURL: process.env.baseURL || process.env.apiUrl || ""
+  baseURL: ROOT,
   // timeout: 60 * 1000, // Timeout
   // withCredentials: true, // Check cross-site Access-Control
 };
@@ -49,8 +58,6 @@ Plugin.install = function(Vue) {
         return _axios;
       },
       post(url,data) {
-        url = '/api' + url;
-        console.log(url)
         return _axios({
           url,
           method: 'post',
