@@ -2,8 +2,8 @@
   <div>
     <HeaderBar />
     <div class="diagnoseLog">
-      <h2>缴费界面</h2>
-      <p>卡内余额：{{balance}}</p>
+      <h2>诊断记录界面</h2>
+      <p v-show="balance">卡内余额：{{balance}}</p>
       <el-table
         :data="tableData"
         border
@@ -57,7 +57,38 @@ export default {
         prescription: '消炎药',
         fees: '9.8',
         ifPayed: '已缴费'
-      }]
+      }],
+      card_id: '',
+    }
+  },
+  mounted() {
+    this.card_id = this.$route.query.card_id || '';
+    this.balance = this.$route.query.balance || '';
+    this.getPatientDiagnosis();
+  },
+  methods: {
+    getPatientDiagnosis() {
+      this.$axios.post('/user/Get_patient_diagnosis',{
+        account: this.card_id,
+      })
+      .then((res) => {
+        if(res.code == 100) {
+          if(res.data instanceof Array) {
+            this.tableData = res.data.map((item) => {
+              return {
+                science: item.diagnosis_department,
+                doctor: item.diagnosis_doctor,
+                disease: item.diagnosis_disease,
+                prescription: item.diagnosis_prescription,
+                fees: item.diagnosis_prescription_money,
+                ifPayed: item.diagnosis_pay_is_or_not === true? '已缴费': '未缴费',
+              }
+            })
+          }
+        } else {
+          this.$message.error(res?.message);
+        }
+      })
     }
   }
 }

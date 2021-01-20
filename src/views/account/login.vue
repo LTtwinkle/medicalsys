@@ -43,7 +43,7 @@
           <el-button @click="resetForm('AcctPwdForm')">重置</el-button>
         </el-form-item>
       </el-form>
-      <div v-if="userType == '患者'">第一次登录？<el-link type="primary" @click="ToRegister">去注册</el-link></div>
+      <!-- <div v-if="userType == '患者'">第一次登录？<el-link type="primary" @click="ToRegister">去注册</el-link></div> -->
     </div>
   </div>
 </template>
@@ -79,10 +79,8 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$message('submit!');
           this.Login();
         } else {
-          console.log('error submit!!');
           return false;
         }
       });
@@ -133,17 +131,20 @@ export default {
         // 密码登录
         data.passwd = this.onlyPwdForm.password;
         if(this.url == '/user/Patient_login') {
-          // data.card_id = sessionStorage.getItem('card_id');
-          data.card_id = '1';
+          data.card_id = sessionStorage.getItem('card_id');
+          // data.card_id = '1';
         }
       }
-      console.log(data);
       this.$axios.post(this.url,data)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if(res.code == '200') {
           console.log(res.data);
           this.$message.success('登录成功！');
+          // 账号密码登录，保存账号
+          if(this.formType) {
+            sessionStorage.setItem('doctor_id', res.data.account);
+          }
           this.$router.push(this.toLink);
         } else {
           this.$message.error(res?.message);

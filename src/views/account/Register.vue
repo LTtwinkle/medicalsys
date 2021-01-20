@@ -41,7 +41,7 @@
           <el-button @click="resetForm('registerValidateForm')">重置</el-button>
         </el-form-item>
       </el-form>
-      <div class="tologin">已注册？<el-link type="primary" @click="ToLogin">去登录</el-link></div>
+      <!-- <div class="tologin">已注册？<el-link type="primary" @click="ToLogin">去登录</el-link></div> -->
     </div>
   </div>
 </template>

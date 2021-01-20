@@ -19,7 +19,7 @@
         <li>姓名：{{patientInfo.name}}</li>
         <li>年龄：{{patientInfo.age}}</li>
         <li>性别：{{patientInfo.sex}}</li>
-        <li><el-button type="info" @click="$router.push('/diagnoseLog')">患者诊断记录</el-button></li>
+        <li><el-button type="info" @click="ToDiagnoseLog">患者诊断记录</el-button></li>
       </ul>
       <ul class="diagnoseInfo">
         <li>
@@ -53,14 +53,15 @@
         </li>
       </ul>
       <div class="next">
-        <el-button type="success" >下一号</el-button>
-        <p>当前待就诊人数：{{waitTreatNum}}</p>
+        <el-button type="success" @click="Calling" >下一号</el-button>
+        <!-- <p>当前待就诊人数：{{waitTreatNum}}</p> -->
       </div>
     </div>
     <el-drawer
       title="药品选择界面"
       :visible.sync="SelectDrugsVisible"
       size="50%"
+      ref="drawerSelect"
     >
       <SelectDrugs @save-info="getSelectDrugsInfo" />
     </el-drawer>
@@ -80,35 +81,48 @@ export default {
       url: require("../../assets/u237.png"),
       SelectDrugsVisible: false,
       doctorInfo: {
+        id: '11',
         adminOffice: '口腔科',
-        technicalPost: '主治医生',
+        technicalPost: '主治医师',
         name: '张医生',
       },
       patientInfo: {
-        card_id: '',
+        card_id: '12',
         name: '王五',
         age: '30',
         sex: '男',
       },
       diagnose: '',
       prescription: '',
+      totalMoney: 0,
       waitTreatNum: 20,
-      diagnoseSubmitData: {
-        card_id: '',
-        department_name: '',
-        doctor_id: '',
-        diagnosis_disease: '',
-        diagnosis_prescription: '',
-        total_money: '',
-      }
     }
+  },
+  mounted() {
+    this.doctorInfo.id = sessionStorage.getItem('doctor_id');
   },
   methods: {
     getSelectDrugsInfo(data) {
       console.log(data);
+      data.map((item) => {
+        this.prescription += item.name + '(' + item.quantity + ') ';
+        this.totalMoney += parseFloat(item.price) * item.quantity;
+      })
+      this.SelectDrugsVisible = false;
     },
-    CallNext() {
-      this.$axios.post('/user/Calling', this.diagnoseSubmitData)
+    Calling() {
+      let data = {
+        account: this.patientInfo.card_id,
+        total_money: this.totalMoney,
+        diagnosis_disease: this.diagnose,
+        diagnosis_prescription: this.prescription,
+        department_name: this.doctorInfo.adminOffice,
+        doctor_id: this.doctorInfo.id,
+        doctor_position: this.doctorInfo.technicalPost,
+        doctor_name: this.doctorInfo.name,
+      }
+      console.log(data);
+      this.$axios.post('/user/Calling', data)
       .then((res) => {
         console.log(res);
         if(res.code == 200) {
@@ -118,6 +132,50 @@ export default {
           this.patientInfo.age = res.data.parent_age;
         } else {
           this.$message.error(res.message);
+        }
+      })
+    },
+    getDoctorInfo() {
+      this.$axios.post('/user/Doctor_Information', {
+        account: this.doctorInfo.id,
+      })
+      .then((res) => {
+        if(res == 200) {
+          this.doctorInfo.adminOffice = res.data.doctor_department;
+          this.doctorInfo.technicalPost = res.data.doctor_position;
+          this.doctorInfo.name = res.data.doctor_name;
+        } else {
+          this.$message.error(res?.message);
+        }
+      })
+      .then(() => {
+        this.getPatientInfo();
+      })
+    },
+    getPatientInfo() {
+      this.$axios.post('/user/Get_next_registor', {
+        department_name: this.doctorInfo.adminOffice,
+        doctor_position: this.doctorInfo.technicalPost,
+        doctor_name: this.doctorInfo.name,
+      })
+      .then((res) => {
+        if(res.code == 200) {
+          this.patientInfo.card_id = res.data.parent_id;
+          this.patientInfo.name = res.data.parent_name;
+          this.patientInfo.sex = res.data.parent_sex;
+          this.patientInfo.age = res.data.parent_age;
+          this.diagnose = '';
+          this.prescription = '';
+        } else {
+          this.$message.error('获取患者信息失败！');
+        }
+      })
+    },
+    ToDiagnoseLog() {
+      this.$router.push({
+        path: '/diagnoseLog',
+        query: {
+          card_id: this.patientInfo.card_id,
         }
       })
     }

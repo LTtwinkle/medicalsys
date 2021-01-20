@@ -15,7 +15,7 @@
         <el-checkbox-group v-model="form.DrugsAndNum">
           <el-checkbox style="margin: 5px" v-for="item in DrugsAndNum" :key="item.id" :label="item.name">
             <span style="margin: 0 10px;">{{item.name}}</span>
-            <el-input v-model="item.quantity" style="width: 100px;" type="number" min="1" size="small"></el-input>
+            <el-input v-model="item.quantity"  style="width: 100px;" type="number" min="1" size="small"></el-input>
           </el-checkbox>
         </el-checkbox-group>
       </el-form-item>
@@ -76,26 +76,34 @@ export default {
           id: '1',
           name: '贝克思止痛药',
           price: 19.8,
-          quantity: 20,
+          quantity: 1,
         },
         {
           id: '2',
           name: '999感冒灵',
           price: 9.8,
-          quantity: 20,
+          quantity: 1,
         },
         {
           id: '3',
           name: '贝洛分颗粒',
           price: 15.8,
-          quantity: 20,
+          quantity: 1,
         }
       ]
     }
   },
   methods: {
     saveInfo() {
-      this.$emit('save-info', this.form)
+      console.log(this.DrugsAndNum)
+      let drugsData = this.form.DrugsAndNum.map((item) => {
+        let eachDrug = this.DrugsAndNum.filter((eachItem) => item == eachItem.name);
+        if(eachDrug instanceof Array && eachDrug.length > 0) {
+          return eachDrug[0];
+        }
+      })
+      this.form.DrugsAndNum = [];
+      this.$emit('save-info', drugsData);
     }
   }
 }

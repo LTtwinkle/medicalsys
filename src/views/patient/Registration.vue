@@ -16,7 +16,7 @@
         </el-form-item>
         <el-form-item label="选择医生">
           <el-radio-group v-model="form.doctor">
-            <el-radio style="margin: 5px" v-for="item in doctor" :key="item.id" :label="item.name"> {{item.name + ' (余号数：' + item.restNum + ')'}}</el-radio>
+            <el-radio style="margin: 5px" v-for="item in doctor" :key="item.id" :label="item.id"> {{item.name + ' (余号数：' + item.restNum + ')'}}</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item>
@@ -104,9 +104,9 @@ export default {
         if(res.code == 200) {
           console.log(res.data)
           if(res.data instanceof Array) {
-            this.doctor = res.data.map((item, index) =>  {
+            this.doctor = res.data.map((item) =>  {
               return {
-                id: index,
+                id: item.doctor_id,
                 name: item.doctor_name,
                 restNum: item.doctor_remain_num,
               }
@@ -122,7 +122,8 @@ export default {
         registered_id: sessionStorage.getItem('card_id') || '11' ,
         registered_department_name: this.form.adminOffice,
         registered_doctor_postion: this.form.technicalPost,
-        registered_doctor_name: this.form.doctor,
+        // registered_doctor_name: this.form.doctor,
+        registered_doctor_id: this.form.doctor,
       }
       this.$axios.post('/user/reg_in', data)
       .then((res) => {

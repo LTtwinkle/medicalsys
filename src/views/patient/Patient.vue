@@ -19,7 +19,7 @@
         <el-button type="primary" @click="$router.push('/registration')">挂号</el-button>
         <el-button type="primary" @click="$router.push('/payfees')">缴费</el-button>
         <el-button type="primary" @click="$router.push('/recharge')">充值</el-button>
-        <el-button type="primary" @click="$router.push('/diagnoseLog')">诊断记录</el-button>
+        <el-button type="primary" @click="ToDiagnoseLog">诊断记录</el-button>
       </div>
     </div>
   </div>
@@ -33,13 +33,44 @@ export default {
   },
   data() {
     return {
-      url: '',
+      url: require("../../assets/patient.png"),
       patient: {
-        name: '张三',
-        sex: '男',
-        cardID: '12345678',
-        balance: '100',
-      }
+        name: '',
+        sex: '',
+        cardID: '',
+        balance: '',
+      },
+      cardID: '',
+    }
+  },
+  mounted() {
+    this.cardID = sessionStorage.getItem('card_id');
+    this.getPatientInfo();
+  },
+  methods: {
+    getPatientInfo() {
+      this.$axios.post('/user/Get_patient_inf', {
+        card_id: this.cardID,
+      })
+      .then((res) => {
+        if(res.code == 200) {
+          this.patient.name = res.data.parent_name;
+          this.patient.sex = res.data.parent_sex;
+          this.patient.cardID = this.cardID;
+          this.patient.balance = res.data.parent_card_money;
+        } else {
+          this.$message.error(res.message);
+        }
+      })
+    },
+    ToDiagnoseLog() {
+      this.$router.push({
+        path: '/diagnoseLog',
+        query: {
+          balance: this.patient.balance || 90,
+          card_id: this.cardID,
+        }
+      })
     }
   }
 }
