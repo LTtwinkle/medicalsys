@@ -72,23 +72,7 @@ export default {
           name: '主治医师',
         }
       ],
-      doctor: [
-        {
-          id: '1',
-          name: '吴思',
-          restNum: 20,
-        },
-        {
-          id: '2',
-          name: '张丽',
-          restNum: 20,
-        },
-        {
-          id: '3',
-          name: '金鑫',
-          restNum: 20,
-        }
-      ]
+      doctor: []
     }
   },
   mounted() {
@@ -117,6 +101,10 @@ export default {
       })
     },
     RegistrationRequst() {
+      if(this.form.doctor == '') {
+        this.$message.error('没有选择具体医生！');
+        return;
+      }
       let data = {
         registered_id: sessionStorage.getItem('card_id') ,
         registered_department_name: this.form.adminOffice,

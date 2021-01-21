@@ -8,7 +8,7 @@
           <span>{{balance}}</span>
         </el-form-item>
         <el-form-item label="输入充值金额">
-          <el-input type="number" v-model="rechargeForm.rechargeValue" min="1"></el-input>
+          <el-input type="number" v-model="rechargeForm.rechargeValue" placeholder="10" min="1"></el-input>
         </el-form-item>
         <el-form-item label="选择充值方式">
           <el-radio-group v-model="rechargeForm.rechargeWays">
@@ -20,8 +20,11 @@
             style="width: 150px; height: 150px"
             :src="url"
             fit="cover"></el-image>
-          <br/>
-          <span>请扫描二维码进行支付！</span>
+          <!-- <br/>
+          <span>请扫描二维码进行支付！</span> -->
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="Recharged">确认充值</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -36,7 +39,7 @@ export default {
   },
   data() {
     return {
-      balance: '20',
+      balance: '0',
       url: require("../../assets/u119.png"),
       rechargeForm: {
         rechargeValue: '',
@@ -59,7 +62,21 @@ export default {
     }
   },
   methods: {
-
+    Recharged() {
+      this.$axios.post('/user/recharge', {
+        parent_id: sessionStorage.getItem('card_id'),
+        recharge_money: parseInt(this.rechargeForm.rechargeValue),
+      })
+      .then((res) => {
+        console.log(res);
+        if(res?.code == 200) {
+          this.$message.success('充值成功！');
+          this.$router.go(-1);
+        } else {
+          this.$message.error(res?.message);
+        }
+      })
+    }
   }
 }
 </script>
@@ -70,5 +87,8 @@ export default {
   h2 {
     text-align: center;
   }
+}
+/deep/ .el-input__inner {
+  padding-right: 0;
 }
 </style>

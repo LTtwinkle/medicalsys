@@ -17,7 +17,7 @@
       </div>
       <div class="action">
         <el-button type="primary" @click="$router.push('/registration')">挂号</el-button>
-        <el-button type="primary" @click="$router.push('/payfees')">缴费</el-button>
+        <el-button type="primary" @click="ToPayFees">缴费</el-button>
         <el-button type="primary" @click="$router.push('/recharge')">充值</el-button>
         <el-button type="primary" @click="ToDiagnoseLog">诊断记录</el-button>
       </div>
@@ -69,6 +69,14 @@ export default {
         query: {
           balance: this.patient.balance,
           card_id: this.cardID,
+        }
+      })
+    },
+    ToPayFees() {
+      this.$router.push({
+        path: '/payfees',
+        query: {
+          balance: this.patient.balance,
         }
       })
     }
