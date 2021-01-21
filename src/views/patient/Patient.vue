@@ -53,7 +53,7 @@ export default {
         card_id: this.cardID,
       })
       .then((res) => {
-        if(res.code == 200) {
+        if(res.code == 100) {
           this.patient.name = res.data.parent_name;
           this.patient.sex = res.data.parent_sex;
           this.patient.cardID = this.cardID;
@@ -67,7 +67,7 @@ export default {
       this.$router.push({
         path: '/diagnoseLog',
         query: {
-          balance: this.patient.balance || 90,
+          balance: this.patient.balance,
           card_id: this.cardID,
         }
       })

@@ -52,7 +52,7 @@ export default {
     WaitLogin(type) {
       this.waitChoose = false;
       this.userType = type;
-      this.$$axios.post('/user/card')
+      this.$axios.post('/user/card')
       .then((res) => {
         this.LoginJudge(res.code);
       })
@@ -66,7 +66,7 @@ export default {
           // 账号非空，直接登录
           sessionStorage.setItem('card_id', res.data);
           this.Login(this.userType);
-        } else if(res.code == 50) {
+        } else if(res.code == 0) {
           // 账号为空，进行注册
           sessionStorage.setItem('card_id', res.data);
           this.$message.info('请前往注册');

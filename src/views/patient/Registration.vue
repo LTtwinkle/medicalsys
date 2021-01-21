@@ -102,7 +102,6 @@ export default {
       })
       .then((res) => {
         if(res.code == 200) {
-          console.log(res.data)
           if(res.data instanceof Array) {
             this.doctor = res.data.map((item) =>  {
               return {
@@ -119,7 +118,7 @@ export default {
     },
     RegistrationRequst() {
       let data = {
-        registered_id: sessionStorage.getItem('card_id') || '11' ,
+        registered_id: sessionStorage.getItem('card_id') ,
         registered_department_name: this.form.adminOffice,
         registered_doctor_postion: this.form.technicalPost,
         // registered_doctor_name: this.form.doctor,

@@ -47,7 +47,7 @@ export default {
   },
   data() {
     return {
-      balance: 100,
+      balance: 0,
       tableData: [{
         date: '2016-05-02',
         prescription: '王小虎',

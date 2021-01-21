@@ -49,15 +49,8 @@ export default {
   },
   data() {
     return {
-      balance: '90',
-      tableData: [{
-        science: '口腔科',
-        doctor: '王小虎',
-        disease: '口腔溃疡',
-        prescription: '消炎药',
-        fees: '9.8',
-        ifPayed: '已缴费'
-      }],
+      balance: '',
+      tableData: [],
       card_id: '',
     }
   },

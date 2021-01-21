@@ -81,16 +81,16 @@ export default {
       url: require("../../assets/u237.png"),
       SelectDrugsVisible: false,
       doctorInfo: {
-        id: '11',
-        adminOffice: '口腔科',
-        technicalPost: '主治医师',
-        name: '张医生',
+        id: '',
+        adminOffice: '',
+        technicalPost: '',
+        name: '',
       },
       patientInfo: {
-        card_id: '12',
-        name: '王五',
-        age: '30',
-        sex: '男',
+        card_id: '',
+        name: '',
+        age: '',
+        sex: '',
       },
       diagnose: '',
       prescription: '',
@@ -100,6 +100,7 @@ export default {
   },
   mounted() {
     this.doctorInfo.id = sessionStorage.getItem('doctor_id');
+    this.getDoctorInfo();
   },
   methods: {
     getSelectDrugsInfo(data) {
@@ -111,8 +112,12 @@ export default {
       this.SelectDrugsVisible = false;
     },
     Calling() {
+      if(this.patientInfo.card_id == '') {
+        this.getPatientInfo();
+        return;
+      }
       let data = {
-        account: this.patientInfo.card_id,
+        card_id: this.patientInfo.card_id,
         total_money: this.totalMoney,
         diagnosis_disease: this.diagnose,
         diagnosis_prescription: this.prescription,
@@ -124,7 +129,7 @@ export default {
       console.log(data);
       this.$axios.post('/user/Calling', data)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if(res.code == 200) {
           this.patientInfo.card_id = res.data.parent_id;
           this.patientInfo.name = res.data.parent_name;
@@ -132,7 +137,14 @@ export default {
           this.patientInfo.age = res.data.parent_age;
         } else {
           this.$message.error(res.message);
+          this.patientInfo.card_id = '';
+          this.patientInfo.name = '';
+          this.patientInfo.sex = '';
+          this.patientInfo.age = '';
         }
+        this.diagnose = '';
+        this.prescription = '';
+        this.totalMoney = 0;
       })
     },
     getDoctorInfo() {
@@ -140,7 +152,8 @@ export default {
         account: this.doctorInfo.id,
       })
       .then((res) => {
-        if(res == 200) {
+        // console.log(res)
+        if(res.code == 200) {
           this.doctorInfo.adminOffice = res.data.doctor_department;
           this.doctorInfo.technicalPost = res.data.doctor_position;
           this.doctorInfo.name = res.data.doctor_name;
@@ -167,7 +180,7 @@ export default {
           this.diagnose = '';
           this.prescription = '';
         } else {
-          this.$message.error('获取患者信息失败！');
+          this.$message.error(res?.message);
         }
       })
     },

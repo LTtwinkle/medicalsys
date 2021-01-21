@@ -18,8 +18,8 @@
           prop="sex"
         >
           <el-radio-group v-model="registerValidateForm.sex">
-            <el-radio label="man">男</el-radio>
-            <el-radio label="woman">女</el-radio>
+            <el-radio label="男">男</el-radio>
+            <el-radio label="女">女</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item
@@ -58,7 +58,7 @@ export default {
       percentage: 0,
       registerValidateForm: {
         name: '',
-        sex: 'man',
+        sex: '男',
         password: '',
       },
     }
