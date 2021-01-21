@@ -109,7 +109,7 @@ export default {
           this.formType = true;
           break;
         case '诊疗师':
-          this.url = '/4';
+          this.url = '/user/doctorLogin';
           this.toLink = '/treator';
           this.formType = true;
           break;
@@ -137,13 +137,16 @@ export default {
       }
       this.$axios.post(this.url,data)
       .then((res) => {
-        // console.log(res);
+        console.log(res);
         if(res.code == '200') {
           console.log(res.data);
           this.$message.success('登录成功！');
           // 账号密码登录，保存账号
           if(this.formType) {
             sessionStorage.setItem('doctor_id', res.data.account);
+          }
+          if(this.formType) {
+            sessionStorage.setItem('treator_id', res.data);
           }
           this.$router.push(this.toLink);
         } else {

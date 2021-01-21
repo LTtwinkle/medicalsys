@@ -13,6 +13,15 @@ export default {
   components: {
     HeaderBar,
   },
+  data() {
+    return {
+      treatorID: '',
+    }
+  },
+  mounted() {
+    this.treatorID = sessionStorage.getItem('treator_id');
+    console.log(this.treatorID)
+  }
 }
 </script>
 <style lang="less" scoped>
