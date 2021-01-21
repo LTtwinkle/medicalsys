@@ -39,7 +39,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <p>余额不足？<el-link type="primary" @click="$router.push('/recharge')">去充值</el-link></p>
+      <p>余额不足？<el-link type="primary" @click="ToRecharge">去充值</el-link></p>
     </div>
   </div>
 </template>
@@ -72,6 +72,7 @@ export default {
       .then((res) => {
         if(res.code == 200) {
           this.$message.success('缴费成功！');
+          this.balance = res.data;
           this.getPayList();
         } else {
           this.$message.error(res?.message);
@@ -105,6 +106,14 @@ export default {
           }
         } else {
           this.$message.error(res?.message);
+        }
+      })
+    },
+    ToRecharge() {
+      this.$router.push({
+        path: '/recharge',
+        query: {
+          balance: this.balance,
         }
       })
     },

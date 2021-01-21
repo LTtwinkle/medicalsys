@@ -54,6 +54,10 @@ export default {
       this.userType = type;
       this.$axios.post('/user/card')
       .then((res) => {
+        if(res.code == '00000000') {
+          this.waitChoose = true;
+          return;
+        }
         this.LoginJudge(res.code);
       })
     },

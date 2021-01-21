@@ -1,7 +1,7 @@
 <template>
   <div class="headerbar">
     <i class="el-icon-back" @click="goBack"></i>
-    <i class="el-icon-switch-button"></i>
+    <i class="el-icon-switch-button" @click="ExitLogin"></i>
   </div>
 </template>
 
@@ -11,6 +11,12 @@ export default {
   methods: {
     goBack() {
       this.$router.go(-1);
+    },
+    ExitLogin() {
+      this.$router.replace('/');
+      sessionStorage.removeItem('card_id');
+      sessionStorage.removeItem('doctor_id');
+      sessionStorage.removeItem('treator_id');
     }
   }
 }

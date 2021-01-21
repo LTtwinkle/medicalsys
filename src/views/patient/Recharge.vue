@@ -61,6 +61,9 @@ export default {
       ]
     }
   },
+  mounted() {
+    this.balance = this.$route.query.balance;
+  },
   methods: {
     Recharged() {
       this.$axios.post('/user/recharge', {
@@ -71,7 +74,7 @@ export default {
         console.log(res);
         if(res?.code == 200) {
           this.$message.success('充值成功！');
-          this.$router.go(-1);
+          this.$router.replace('/patient');
         } else {
           this.$message.error(res?.message);
         }
