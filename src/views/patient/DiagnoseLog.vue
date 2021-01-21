@@ -74,7 +74,7 @@ export default {
                 disease: item.diagnosis_disease,
                 prescription: item.diagnosis_prescription,
                 fees: item.diagnosis_prescription_money,
-                ifPayed: item.diagnosis_pay_is_or_not === true? '已缴费': '未缴费',
+                ifPayed: item.diagnosis_pay_is_or_not == '是' ? '已缴费': '未缴费',
               }
             })
           }
